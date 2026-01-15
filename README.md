@@ -26,3 +26,6 @@ We want to store game results in a database.
 - `cd client`
 - `npm i`
 - `npm start`
+
+## Submission
+Once you are done please submit the public repo to your recruiter or invite nick@spruce.eco to your private repo and let your recruiter know. 
