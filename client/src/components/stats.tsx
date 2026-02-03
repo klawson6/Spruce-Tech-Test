@@ -1,39 +1,58 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { fetchStats } from "../utils/apiClient";
+import { WinStats } from "../types";
+import { Spinner } from "./spinner";
 
 export type StatsProps = {};
 
 export const Stats = ({}) => {
+  const [stats, setStats] = useState<WinStats | null>(null);
+  useEffect(() => {
+    const initStats = async () => {
+      const response = await fetchStats();
+      setStats(response);
+    };
+    initStats();
+  }, []);
+
   return (
     <div className="flex flex-col gap-10 text-xl border-2 rounded-md border-black p-5 w-60 mb-auto mx-auto">
       <span className="text-center">Statistics</span>
-      <hr className="border-1 border-black" />
-      <table>
-        <thead>
-          <tr className="text-right">
-            <td></td>
-            <td>Wins</td>
-            <td>Losses</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="text-center">X</td>
-            <td className="text-right">4</td>
-            <td className="text-right">3</td>
-          </tr>
-          <tr>
-            <td className="text-center">O</td>
-            <td className="text-right">3</td>
-            <td className="text-right">4</td>
-          </tr>
-        </tbody>
-      </table>
-      <hr className="border-1 border-black" />
-      <div className="flex justify-center gap-2">
-        <span>Draws:</span>
-        <span>2</span>
-      </div>
+      {stats ? (
+        <>
+          <hr className="border-1 border-black" />
+          <table>
+            <thead>
+              <tr className="text-right">
+                <td></td>
+                <td>Wins</td>
+                <td>Losses</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="text-center">X</td>
+                <td className="text-right">{stats.X}</td>
+                <td className="text-right">3</td>
+              </tr>
+              <tr>
+                <td className="text-center">O</td>
+                <td className="text-right">3</td>
+                <td className="text-right">4</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr className="border-1 border-black" />
+          <div className="flex justify-center gap-2">
+            <span>Draws:</span>
+            <span>2</span>
+          </div>
+        </>
+      ) : (
+        <div className="mx-auto">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 };

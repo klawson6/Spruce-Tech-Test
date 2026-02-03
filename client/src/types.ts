@@ -9,3 +9,9 @@ export type BoardPositions = BoardEntry[][];
 export type CellCoordinate = { x: number; y: number };
 
 export type Result = { winner: Winner; winningLine?: Array<CellCoordinate> };
+
+export type WinStats = {
+  X: number;
+  O: number;
+  draw: number;
+};
