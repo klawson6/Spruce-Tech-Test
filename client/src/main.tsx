@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Board from "./components/board";
+import Game from "./components/game";
 
 export const Main = () => {
-  return <Board />;
+  return <Game />;
 };
