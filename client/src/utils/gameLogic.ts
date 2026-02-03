@@ -39,7 +39,7 @@ export const evaluateGame = (
     winningDiagonal[i] = { x: i, y: i };
 
     // Build anti-diagonal
-    if (antiDiagonalWin && board[boardSize - 1 - i][i] !== turn)
+    if (antiDiagonalWin && board[i][boardSize - 1 - i] !== turn)
       antiDiagonalWin = false;
     winningAntiDiagonal[i] = { x: boardSize - 1 - i, y: i };
   }

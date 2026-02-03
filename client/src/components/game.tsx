@@ -24,7 +24,7 @@ export default function Game() {
   const handleClick = (x: number, y: number) => {
     if (board[x][y] || win.winner) return;
 
-    const newBoard = [...board];
+    const newBoard = board.map((r) => [...r]);
     newBoard[x][y] = turn;
     setBoard(newBoard);
 
