@@ -38,6 +38,7 @@ export default function SizeInput({
       <button
         className="rounded-md px-2 bg-slate-200 border-2 border-black w-20"
         onClick={handleClick}
+        aria-label={size !== initialSize ? "Apply" : "Reset"}
       >
         {size !== initialSize ? "Apply" : "Reset"}
       </button>

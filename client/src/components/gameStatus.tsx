@@ -1,9 +1,9 @@
 import React from "react";
-import { Result, XorO } from "../types";
+import { Winner, XorO } from "../types";
 
 export type GameStatus = {
   turn: XorO;
-  winner: Result;
+  winner: Winner;
 };
 
 export const GameStatus = ({ turn, winner }: GameStatus) => {

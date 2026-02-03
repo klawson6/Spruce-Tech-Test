@@ -1,43 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { BoardEntry, Result, XorO } from "../types";
+import { BoardEntry, CellCoordinate, Result, Winner, XorO } from "../types";
 import SizeInput from "./sizeInput";
 import { GameStatus } from "./gameStatus";
 import { Board } from "./board";
 import { MIN_BOARD_SIZE } from "../constants";
+import { evaluateGame } from "../utils/gameLogic";
 
 type BoardPositions = BoardEntry[][];
-
-const evaluateGame = (
-  board: BoardPositions,
-  turn: XorO,
-  boardSize: number,
-): Result => {
-  let diagonalWin = true;
-  let antiDiagonalWin = true;
-
-  for (let i = 0; i < boardSize; i++) {
-    if (board[i].every((v) => v === turn)) return turn;
-
-    let columnWin = true;
-    for (const row of board) {
-      if (row[i] !== turn) {
-        columnWin = false;
-        break;
-      }
-    }
-    if (columnWin) return turn;
-
-    if (diagonalWin && board[i][i] !== turn) diagonalWin = false;
-    if (antiDiagonalWin && board[boardSize - 1 - i][i] !== turn)
-      antiDiagonalWin = false;
-  }
-
-  if (diagonalWin || antiDiagonalWin) return turn;
-
-  if (board.every((row) => row.every((v) => v))) return "draw";
-
-  return undefined;
-};
 
 export default function Game() {
   const [board, setBoard] = useState<BoardPositions>(
@@ -46,19 +15,22 @@ export default function Game() {
     ),
   );
   const [turn, setTurn] = useState<XorO>("X");
-  const [winner, setWinner] = useState<Result>(undefined);
+  const [win, setWin] = useState<{
+    winner: Winner;
+    winningLine?: Array<CellCoordinate>;
+  }>({ winner: undefined });
   const [boardSize, setBoardSize] = useState(MIN_BOARD_SIZE);
 
   const handleClick = (x: number, y: number) => {
-    if (board[x][y] || winner) return;
+    if (board[x][y] || win.winner) return;
 
     const newBoard = [...board];
     newBoard[x][y] = turn;
     setBoard(newBoard);
 
     const result = evaluateGame(newBoard, turn, boardSize);
-    if (result) {
-      setWinner(result);
+    if (result?.winner) {
+      setWin(result);
     } else {
       setTurn(turn === "X" ? "O" : "X");
     }
@@ -71,7 +43,7 @@ export default function Game() {
       ),
     );
     setTurn("X");
-    setWinner(undefined);
+    setWin({ winner: undefined });
     setBoardSize(size);
   };
 
@@ -79,9 +51,9 @@ export default function Game() {
     <div className="flex flex-col mt-10 items-center gap-10">
       <div className="font-bold text-2xl">Tic Tac Toe</div>
       <div className="text-xl">
-        <GameStatus turn={turn} winner={winner} />
+        <GameStatus turn={turn} winner={win.winner} />
       </div>
-      <Board board={board} handleClick={handleClick} />
+      <Board board={board} handleClick={handleClick} result={win} />
       <SizeInput initialSize={boardSize} handleReset={handleReset} />
     </div>
   );
