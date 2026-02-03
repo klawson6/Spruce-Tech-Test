@@ -48,11 +48,8 @@ export default function Game() {
   };
 
   return (
-    <div className="flex flex-col mt-10 items-center gap-10">
-      <div className="font-bold text-2xl">Tic Tac Toe</div>
-      <div className="text-xl">
-        <GameStatus turn={turn} winner={win.winner} />
-      </div>
+    <div className="flex flex-col items-center gap-10 text-xl border-2 rounded-md border-black p-5">
+      <GameStatus turn={turn} winner={win.winner} />
       <Board board={board} handleClick={handleClick} result={win} />
       <SizeInput initialSize={boardSize} handleReset={handleReset} />
     </div>

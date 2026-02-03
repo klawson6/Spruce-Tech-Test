@@ -24,7 +24,7 @@ export default function SizeInput({
   };
 
   return (
-    <div className="text-xl flex flex-row gap-2">
+    <div className="text-xl flex flex-row gap-2 mt-auto">
       <label htmlFor="board-size">Board Size:</label>
       <input
         name="board-size"
