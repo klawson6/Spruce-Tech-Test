@@ -1,38 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { XorO } from "../types";
+import { BoardEntry, Result, XorO } from "../types";
+import SizeInput from "./sizeInput";
 
-type BoardPositions = (XorO | undefined)[][];
+type BoardPositions = BoardEntry[][];
+
+const evaluateGame = (
+  board: BoardPositions,
+  turn: XorO,
+  boardSize: number,
+): Result => {
+  for (const row of board) {
+    if (row.every((v) => v === turn)) return turn;
+  }
+
+  const diagonal: Array<BoardEntry> = Array.from(
+    { length: boardSize },
+    () => undefined,
+  );
+
+  const antiDiagonal: Array<BoardEntry> = Array.from(
+    { length: boardSize },
+    () => undefined,
+  );
+
+  for (let i = 0; i < boardSize; i++) {
+    if (board[i].every((v) => v === turn)) return turn;
+
+    if (board.map((r) => r[i]).every((v) => v === turn)) return turn;
+
+    diagonal[i] = board[i][i];
+    antiDiagonal[i] = board[boardSize - 1 - i][i];
+  }
+
+  if (diagonal.every((v) => v === turn)) return turn;
+  if (antiDiagonal.every((v) => v === turn)) return turn;
+
+  if (board.every((row) => row.every((v) => v))) return "draw";
+
+  return undefined;
+};
 
 export default function Board() {
-  const [board, setBoard] = useState<BoardPositions>([
-    [undefined, undefined, undefined],
-    [undefined, undefined, undefined],
-    [undefined, undefined, undefined],
-  ]);
+  const [board, setBoard] = useState<BoardPositions>(
+    Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => undefined)),
+  );
   const [turn, setTurn] = useState<XorO>("X");
-  const [winner, setWinner] = useState<XorO | "draw" | undefined>(undefined);
-
-  const evaluateGame = (
-    board: BoardPositions,
-    turn: XorO,
-  ): XorO | "draw" | undefined => {
-    for (const row of board) {
-      if (row.every((v) => v === turn)) return turn;
-    }
-
-    for (let i = 0; i < 3; i++) {
-      const column = [board[0][i], board[1][i], board[2][i]];
-      if (column.every((v) => v === turn)) return turn;
-    }
-
-    if ([0, 1, 2].map((i) => board[i][i]).every((v) => v === turn)) return turn;
-    if ([0, 1, 2].map((i) => board[2 - i][i]).every((v) => v === turn))
-      return turn;
-
-    if (board.every((row) => row.every((v) => v))) return "draw";
-
-    return undefined;
-  };
+  const [winner, setWinner] = useState<Result>(undefined);
+  const [boardSize, setBoardSize] = useState(3);
 
   const handleClick = (x: number, y: number) => {
     if (board[x][y] || winner) return;
@@ -41,7 +55,7 @@ export default function Board() {
     newBoard[x][y] = turn;
     setBoard(newBoard);
 
-    const result = evaluateGame(newBoard, turn);
+    const result = evaluateGame(newBoard, turn, boardSize);
     if (result) {
       setWinner(result);
     } else {
@@ -50,16 +64,16 @@ export default function Board() {
   };
 
   const handleReset = () => {
-    setBoard([
-      [undefined, undefined, undefined],
-      [undefined, undefined, undefined],
-      [undefined, undefined, undefined],
-    ]);
+    setBoard(
+      Array.from({ length: boardSize }, () =>
+        Array.from({ length: boardSize }, () => undefined),
+      ),
+    );
     setTurn("X");
     setWinner(undefined);
   };
 
-  const renderResult = (winner: XorO | "draw" | undefined) => {
+  const renderResult = (winner: Result) => {
     if (winner === "draw")
       return <span className="text-orange-600 font-bold">Draw!</span>;
     if (winner)
@@ -88,14 +102,11 @@ export default function Board() {
           </div>
         ))}
       </div>
-      <div className="text-xl">
-        <button
-          className="rounded-md px-2 bg-slate-400 border-2 border-gray-500"
-          onClick={handleReset}
-        >
-          Reset
-        </button>
-      </div>
+      <SizeInput
+        size={boardSize}
+        setSize={setBoardSize}
+        handleReset={handleReset}
+      />
     </div>
   );
 }
