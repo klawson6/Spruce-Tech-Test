@@ -8,10 +8,19 @@ export type BoardPositions = BoardEntry[][];
 
 export type CellCoordinate = { x: number; y: number };
 
-export type Result = { winner: Winner; winningLine?: Array<CellCoordinate> };
+export type Win = { winner: Winner; winningLine?: Array<CellCoordinate> };
 
 export type Results = {
   X: number;
   O: number;
   draw: number;
+};
+
+export type ResultsForSize = {
+  size: number;
+} & Results;
+
+export type Result = {
+  size: number;
+  winner: XorO | "draw";
 };

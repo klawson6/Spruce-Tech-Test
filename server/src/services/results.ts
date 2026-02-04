@@ -13,13 +13,10 @@ export const getResults = async (
     },
   });
 
-  if (Object.values(results._sum).some((s) => s === null))
-    reply.code(500).send("Database error");
-
   reply.code(200).send({
-    X: results._sum.X as number,
-    O: results._sum.O as number,
-    draw: results._sum.draw as number,
+    X: results._sum.X ?? 0,
+    O: results._sum.O ?? 0,
+    draw: results._sum.draw ?? 0,
   });
 };
 

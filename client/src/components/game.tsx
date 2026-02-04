@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BoardEntry, CellCoordinate, Result, Winner, XorO } from "../types";
+import { BoardEntry, CellCoordinate, Win, Winner, XorO } from "../types";
 import SizeInput from "./sizeInput";
 import { GameStatus } from "./gameStatus";
 import { Board } from "./board";
 import { MIN_BOARD_SIZE } from "../constants";
 import { evaluateGame } from "../utils/gameLogic";
+import { submitWin } from "../utils/apiClient";
 
 type BoardPositions = BoardEntry[][];
 
@@ -30,6 +31,7 @@ export default function Game() {
 
     const result = evaluateGame(newBoard, turn, boardSize);
     if (result?.winner) {
+      submitWin({ size: boardSize, winner: result.winner });
       setWin(result);
     } else {
       setTurn(turn === "X" ? "O" : "X");

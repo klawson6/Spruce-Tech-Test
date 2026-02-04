@@ -1,10 +1,10 @@
 import React from "react";
-import { BoardPositions, CellCoordinate, Result, Winner } from "../types";
+import { BoardPositions, CellCoordinate, Win, Winner } from "../types";
 
 export type BoardProps = {
   board: BoardPositions;
   handleClick: (x: number, y: number) => void;
-  result: Result;
+  result: Win;
 };
 
 export const Board = ({ board, handleClick, result }: BoardProps) => {

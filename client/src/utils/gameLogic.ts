@@ -1,10 +1,10 @@
-import { BoardPositions, XorO, Result } from "../types";
+import { BoardPositions, XorO, Win } from "../types";
 
 export const evaluateGame = (
   board: BoardPositions,
   turn: XorO,
   boardSize: number,
-): Result => {
+): Win => {
   let diagonalWin = true;
   const winningDiagonal = Array(boardSize);
   let antiDiagonalWin = true;

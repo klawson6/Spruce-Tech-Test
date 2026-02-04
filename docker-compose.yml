@@ -1,24 +1,4 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: app
-    container_name: app
-    ports:
-      - 8080:8080
-    restart: unless-stopped
-    read_only: true
-    healthcheck:
-      test: ["CMD", "wget", "-q0-", "http://app:8080"]
-      interval: 5s
-      timeout: 30s
-      retries: 5
-    depends_on:
-      - db
-    networks:
-      - t3
-
   db:
     image: postgres:18.1
     ports:
@@ -28,10 +8,37 @@ services:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=t3
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
     networks:
       - t3
     volumes:
       - db:/var/lib/postgresql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app
+    container_name: app
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    env_file:
+      - server/.env.container
+    healthcheck:
+      test: ["CMD", "wget", "-q0-", "http://app:8080"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - t3
 
 networks:
   t3: {}

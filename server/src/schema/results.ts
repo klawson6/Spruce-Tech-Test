@@ -27,14 +27,20 @@ export const getAllResults = {
 
 export const patchResults = {
   body: {
-    type: "object",
-    properties: {
-      size: {
-        type: "number",
-      },
-      winner: {
-        type: "string",
-        enum: ["X", "O", "draw"],
+    content: {
+      "application/json": {
+        schema: {
+          type: "object",
+          properties: {
+            size: {
+              type: "number",
+            },
+            winner: {
+              type: "string",
+              enum: ["X", "O", "draw"],
+            },
+          },
+        },
       },
     },
   },

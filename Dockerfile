@@ -40,7 +40,10 @@ FROM base AS app
 COPY --from=app-deps /app/server/node_modules ./node_modules
 COPY --from=build /app/server/dist ./dist
 COPY --from=build /app/server/public ./public
+COPY --from=build /app/server/prisma ./prisma
+COPY --from=build /app/server/prisma.config.ts ./prisma.config.ts
+COPY --from=build /app/server/package.json ./package.json
 
 EXPOSE 8080
 
-CMD ["node", "dist/index.mjs"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.mjs"]
