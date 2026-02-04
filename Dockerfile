@@ -12,16 +12,20 @@ FROM base AS app-deps
 
 COPY --parents package.json package-lock.json ./client/package.json ./client/package-lock.json ./server/package.json ./server/package-lock.json /app/
 
-RUN npm ci --ignore-scripts --prefix client
-RUN npm ci --ignore-scripts --prefix server --omit=dev
+RUN --mount=type=cache,target=/home/runner/.npm,sharing=locked \
+    npm ci --ignore-scripts --prefix client
+RUN --mount=type=cache,target=/home/runner/.npm,sharing=locked \
+    npm ci --ignore-scripts --prefix server --omit=dev
 
 # Image with all dependencies for tests etc
 FROM base AS build-deps
 
 COPY --parents package.json package-lock.json ./client/package.json ./client/package-lock.json ./server/package.json ./server/package-lock.json /app/
 
-RUN npm ci --ignore-scripts --prefix client
-RUN npm ci --ignore-scripts --prefix server
+RUN --mount=type=cache,target=/home/runner/.npm,sharing=locked \
+    npm ci --ignore-scripts --prefix client
+RUN --mount=type=cache,target=/home/runner/.npm,sharing=locked \
+    npm ci --ignore-scripts --prefix server
 
 # Image with fully built app
 FROM build-deps AS build
