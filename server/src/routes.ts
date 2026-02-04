@@ -6,7 +6,7 @@ import {
 } from "./schema/results.js";
 
 export const routes = (server: FastifyInstance) => {
-  server.get("/", (req, reply) => {
+  server.get("/", (_, reply) => {
     reply.sendFile("index.html");
   });
 

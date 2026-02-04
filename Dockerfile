@@ -4,33 +4,35 @@ FROM node:24.13-alpine3.23 AS base
 WORKDIR /app
 
 RUN addgroup -g 1001 -S runner && \
-    adduser -S runner -u 1001 -h /home/runner -G runner && \
+    adduser -S runner -u 1001 -h /home/runner/ -G runner && \
     chown -R runner:runner /app/
+
+USER runner
 
 # Image with only dependencies for runtime
 FROM base AS app-deps
 
-COPY --parents package.json package-lock.json ./client/package.json ./client/package-lock.json ./server/package.json ./server/package-lock.json /app/
+COPY --chown=runner:runner --parents package.json package-lock.json ./client/package.json ./client/package-lock.json ./server/package.json ./server/package-lock.json /app/
 
-RUN --mount=type=cache,target=/home/runner/.npm,sharing=locked \
+RUN --mount=type=cache,target=/home/runner/.npm,uid=1001,gid=1001,sharing=locked \
     npm ci --ignore-scripts --prefix client
-RUN --mount=type=cache,target=/home/runner/.npm,sharing=locked \
+RUN --mount=type=cache,target=/home/runner/.npm,uid=1001,gid=1001,sharing=locked \
     npm ci --ignore-scripts --prefix server --omit=dev
 
-# Image with all dependencies for tests etc
+# Image with all dependencies for build and test stages
 FROM base AS build-deps
 
-COPY --parents package.json package-lock.json ./client/package.json ./client/package-lock.json ./server/package.json ./server/package-lock.json /app/
+COPY --chown=runner:runner --parents package.json package-lock.json ./client/package.json ./client/package-lock.json ./server/package.json ./server/package-lock.json /app/
 
-RUN --mount=type=cache,target=/home/runner/.npm,sharing=locked \
+RUN --mount=type=cache,target=/home/runner/.npm,uid=1001,gid=1001,sharing=locked \
     npm ci --ignore-scripts --prefix client
-RUN --mount=type=cache,target=/home/runner/.npm,sharing=locked \
+RUN --mount=type=cache,target=/home/runner/.npm,uid=1001,gid=1001,sharing=locked \
     npm ci --ignore-scripts --prefix server
 
 # Image with fully built app
 FROM build-deps AS build
 
-COPY . .
+COPY --chown=runner:runner . .
 
 RUN npm run build
 
