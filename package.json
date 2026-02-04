@@ -1,0 +1,7 @@
+{
+  "name": "tic-tac-toe",
+  "scripts": {
+    "postinstall": "npm install --prefix client && npm install --prefix server",
+    "build": "npm run build --prefix client && npm run build --prefix server"
+  }
+}
