@@ -3,18 +3,12 @@ import { fetchResults } from "../utils/apiClient";
 import { Results } from "../types";
 import { Spinner } from "./spinner";
 
-export const ResultsCard = () => {
-  const [results, setResults] = useState<Results | null>(null);
-  const [err, setErr] = useState(false);
-  useEffect(() => {
-    const initResults = async () => {
-      const response = await fetchResults();
-      if (response) setResults(response);
-      else setErr(true);
-    };
-    initResults();
-  }, []);
+type ResultsCardProps = {
+  results: Results | null;
+  err: boolean;
+};
 
+export const ResultsCard = ({ results, err }: ResultsCardProps) => {
   return (
     <div className="flex flex-col gap-10 text-xl border-2 rounded-md border-black p-5 w-60 mb-auto mx-auto">
       <span className="text-center">Results</span>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BoardEntry, CellCoordinate, Win, Winner, XorO } from "../types";
 import SizeInput from "./sizeInput";
 import { GameStatus } from "./gameStatus";
@@ -8,8 +8,11 @@ import { evaluateGame } from "../utils/gameLogic";
 import { submitWin } from "../utils/apiClient";
 
 type BoardPositions = BoardEntry[][];
+type GameProps = {
+  onGameEnd: () => void;
+};
 
-export default function Game() {
+export default function Game({ onGameEnd }: GameProps) {
   const [board, setBoard] = useState<BoardPositions>(
     Array.from({ length: MIN_BOARD_SIZE }, () =>
       Array.from({ length: MIN_BOARD_SIZE }, () => undefined),
@@ -22,7 +25,7 @@ export default function Game() {
   }>({ winner: undefined });
   const [boardSize, setBoardSize] = useState(MIN_BOARD_SIZE);
 
-  const handleClick = (x: number, y: number) => {
+  const handleClick = async (x: number, y: number) => {
     if (board[x][y] || win.winner) return;
 
     const newBoard = board.map((r) => [...r]);
@@ -31,7 +34,8 @@ export default function Game() {
 
     const result = evaluateGame(newBoard, turn, boardSize);
     if (result?.winner) {
-      submitWin({ size: boardSize, winner: result.winner });
+      await submitWin({ size: boardSize, winner: result.winner });
+      onGameEnd();
       setWin(result);
     } else {
       setTurn(turn === "X" ? "O" : "X");
