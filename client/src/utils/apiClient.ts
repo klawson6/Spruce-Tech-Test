@@ -1,9 +1,9 @@
-import { WinStats } from "../types";
+import { Results } from "../types";
 
-export const fetchStats = async (): Promise<WinStats | undefined> => {
-  const response = await fetch("/statistics");
+export const fetchResults = async (): Promise<Results | undefined> => {
+  const response = await fetch("/results");
 
   if (response.ok) {
-    return (await response.json()) as WinStats;
+    return (await response.json()) as Results;
   }
 };

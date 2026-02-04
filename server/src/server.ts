@@ -4,6 +4,7 @@ import { routes } from "./routes.js";
 import fastifyStatic from "@fastify/static";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import prismaPlugin from "./plugins/prisma.js";
 
 export const buildServer = () => {
   const server = fastify();
@@ -16,6 +17,8 @@ export const buildServer = () => {
     root: path.join(__dirname, "../public"),
     prefix: "/",
   });
+
+  server.register(prismaPlugin);
 
   server.register(routes);
 

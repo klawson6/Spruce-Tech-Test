@@ -7,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-model Statistic {
+model Results {
   id   Int @id @default(autoincrement())
   size Int @unique
   X    Int @default(0)

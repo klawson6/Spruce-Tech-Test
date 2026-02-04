@@ -10,7 +10,7 @@ export type CellCoordinate = { x: number; y: number };
 
 export type Result = { winner: Winner; winningLine?: Array<CellCoordinate> };
 
-export type WinStats = {
+export type Results = {
   X: number;
   O: number;
   draw: number;

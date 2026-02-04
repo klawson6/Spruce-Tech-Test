@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { fetchStats } from "../utils/apiClient";
-import { WinStats } from "../types";
+import { fetchResults } from "../utils/apiClient";
+import { Results } from "../types";
 import { Spinner } from "./spinner";
 
-export type StatsProps = {};
-
-export const Stats = ({}) => {
-  const [stats, setStats] = useState<WinStats | null>(null);
+export const ResultsCard = () => {
+  const [results, setResults] = useState<Results | null>(null);
   const [err, setErr] = useState(false);
   useEffect(() => {
-    const initStats = async () => {
-      const response = await fetchStats();
-      if (response) setStats(response);
+    const initResults = async () => {
+      const response = await fetchResults();
+      if (response) setResults(response);
       else setErr(true);
     };
-    initStats();
+    initResults();
   }, []);
 
   return (
     <div className="flex flex-col gap-10 text-xl border-2 rounded-md border-black p-5 w-60 mb-auto mx-auto">
-      <span className="text-center">Statistics</span>
-      {stats ? (
+      <span className="text-center">Results</span>
+      {results ? (
         <>
           <hr className="border-1 border-black" />
           <table>
@@ -34,20 +32,20 @@ export const Stats = ({}) => {
             <tbody>
               <tr>
                 <td className="text-center">X</td>
-                <td className="text-right">{stats.X}</td>
-                <td className="text-right">{stats.O}</td>
+                <td className="text-right">{results.X}</td>
+                <td className="text-right">{results.O}</td>
               </tr>
               <tr>
                 <td className="text-center">O</td>
-                <td className="text-right">{stats.O}</td>
-                <td className="text-right">{stats.X}</td>
+                <td className="text-right">{results.O}</td>
+                <td className="text-right">{results.X}</td>
               </tr>
             </tbody>
           </table>
           <hr className="border-1 border-black" />
           <div className="flex justify-center gap-2">
             <span>Draws:</span>
-            <span>{stats.draw}</span>
+            <span>{results.draw}</span>
           </div>
         </>
       ) : (

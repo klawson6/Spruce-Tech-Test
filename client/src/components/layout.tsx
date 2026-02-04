@@ -1,5 +1,5 @@
 import React from "react";
-import { Stats } from "./stats";
+import { ResultsCard } from "./results";
 import Game from "./game";
 
 export const Layout = ({}) => {
@@ -7,7 +7,7 @@ export const Layout = ({}) => {
     <div className="flex flex-col mt-10 items-center gap-10">
       <div className="font-bold text-2xl">Tic Tac Toe</div>
       <div className="flex flex-col-reverse gap-2 md:flex-row">
-        <Stats />
+        <ResultsCard />
         <Game />
       </div>
     </div>
