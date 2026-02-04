@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "es2019",
+    "strict": true,
+    "esModuleInterop": true
+  }
+}
