@@ -7,10 +7,12 @@ export type StatsProps = {};
 
 export const Stats = ({}) => {
   const [stats, setStats] = useState<WinStats | null>(null);
+  const [err, setErr] = useState(false);
   useEffect(() => {
     const initStats = async () => {
       const response = await fetchStats();
-      setStats(response);
+      if (response) setStats(response);
+      else setErr(true);
     };
     initStats();
   }, []);
@@ -33,24 +35,24 @@ export const Stats = ({}) => {
               <tr>
                 <td className="text-center">X</td>
                 <td className="text-right">{stats.X}</td>
-                <td className="text-right">3</td>
+                <td className="text-right">{stats.O}</td>
               </tr>
               <tr>
                 <td className="text-center">O</td>
-                <td className="text-right">3</td>
-                <td className="text-right">4</td>
+                <td className="text-right">{stats.O}</td>
+                <td className="text-right">{stats.X}</td>
               </tr>
             </tbody>
           </table>
           <hr className="border-1 border-black" />
           <div className="flex justify-center gap-2">
             <span>Draws:</span>
-            <span>2</span>
+            <span>{stats.draw}</span>
           </div>
         </>
       ) : (
         <div className="mx-auto">
-          <Spinner />
+          {err ? <>Could not load stats</> : <Spinner />}
         </div>
       )}
     </div>

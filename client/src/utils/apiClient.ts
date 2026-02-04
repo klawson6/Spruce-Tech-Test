@@ -1,11 +1,9 @@
 import { WinStats } from "../types";
 
-export const fetchStats = async (): Promise<WinStats> => {
-  await new Promise((r) => setTimeout(r, 2000));
+export const fetchStats = async (): Promise<WinStats | undefined> => {
+  const response = await fetch("/statistics");
 
-  return {
-    X: 5,
-    O: 3,
-    draw: 2,
-  };
+  if (response.ok) {
+    return (await response.json()) as WinStats;
+  }
 };
