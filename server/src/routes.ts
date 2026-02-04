@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify";
-import { getResults, postResults } from "./services/results.js";
+import { getResults, patchResults } from "./services/results.js";
 import {
   getAllResults as getResultsSchema,
-  postResults as postResultsSchema,
+  patchResults as patchResultsSchema,
 } from "./schema/results.js";
 
 export const routes = (server: FastifyInstance) => {
@@ -11,5 +11,5 @@ export const routes = (server: FastifyInstance) => {
   });
 
   server.get("/results", { schema: getResultsSchema }, getResults);
-  server.post("/results", { schema: postResultsSchema }, postResults);
+  server.patch("/results", { schema: patchResultsSchema }, patchResults);
 };

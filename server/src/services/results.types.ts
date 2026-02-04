@@ -4,7 +4,7 @@ export type GetResultsResponseBody = {
   draw: number;
 };
 
-export type PostResultsRequestBody = {
+export type PatchResultsRequestBody = {
   size: number;
   winner: "X" | "O" | "draw";
 };

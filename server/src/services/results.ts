@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { PostResultsRequestBody } from "./results.types";
+import { PatchResultsRequestBody } from "./results.types";
 
 export const getResults = async (
   request: FastifyRequest,
@@ -23,8 +23,8 @@ export const getResults = async (
   });
 };
 
-export const postResults = async (
-  request: FastifyRequest<{ Body: PostResultsRequestBody }>,
+export const patchResults = async (
+  request: FastifyRequest<{ Body: PatchResultsRequestBody }>,
   reply: FastifyReply,
 ) => {
   const { size, winner } = request.body;

@@ -25,7 +25,7 @@ export const getAllResults = {
   },
 };
 
-export const postResults = {
+export const patchResults = {
   body: {
     type: "object",
     properties: {
