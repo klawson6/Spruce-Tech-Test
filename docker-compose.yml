@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app
+    container_name: app
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    read_only: true
+    healthcheck:
+      test: ["CMD", "wget", "-q0-", "http://app:8080"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+    depends_on:
+      - db
+    networks:
+      - t3
+
+  db:
+    image: postgres:18.1
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=t3
+    networks:
+      - t3
+    volumes:
+      - db:/var/lib/postgresql
+
+networks:
+  t3: {}
+
+volumes:
+  db: {}

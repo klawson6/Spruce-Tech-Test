@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "es2019",
+    "target": "esnext",
     "strict": true,
     "esModuleInterop": true
   }

@@ -2,6 +2,10 @@
   "name": "tic-tac-toe",
   "scripts": {
     "postinstall": "npm install --prefix client && npm install --prefix server",
-    "build": "npm run build --prefix client && npm run build --prefix server"
+    "build": "npm run build --prefix client && npm run build --prefix server",
+    "start": "docker compose up --build -d",
+    "start:db": "docker compose up -d db",
+    "stop": "docker compose stop",
+    "down": "docker compose down --volumes"
   }
 }
