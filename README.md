@@ -1,31 +1,83 @@
-
 # Tic-Tac-Toe
-The below problems are to allow us a glimpse into your problem solving ability, style and current skill set. Vibe coding is allowed but we are looking for good taste, brevity and clarity in your code. 
 
-## Problems
-### Problem 1
-We have started a basic game of Tic-Tac-Toe as outlined [here](https://en.wikipedia.org/wiki/Tic-tac-toe) but we don't have anyone good enough to code to finish it! 
-- Please implement a complete basic game of Tic-Tac-Toe
-- Please use React and TypeScript throughout, if you know TailwindCSS please expand on what is already provided, otherwise it is fine to use raw styling 
-- Both players will play out of the same application, it is sufficient to just switch the current player each time a move is played
-- Once a game is completed, I should be able to start another game 
+Full-stack Tic-Tac-Toe application with a 3-15 square grid game board and game history tracking.
 
-### Problem 2
-We are bored with the basic game now, can you make it so the board can be scaled to any size? 
-- Add some kind of input which allows me to change the board size
-- The board size should be a number between 3 and 15 
+## Tech Stack
 
-### Problem 3
-We want to store game results in a database.
-- Create a simple backend server
-- Use any SQL database to store the results, please structure it in a relational manner and in a way for it to be expanded for future use cases 
-- Display simple stats back to the user including number of win and losses for each player
+- **Frontend:** React, TypeScript, TailwindCSS
+- **Backend:** Node.js, Fastify, Prisma
+- **Database:** PostgreSQL
+- **Infrastructure:** Docker
 
-## Quickstart
-- Make sure you have **node** installed
-- `cd client`
-- `npm i`
-- `npm start`
+## Prerequisites
 
-## Submission
-Once you are done please submit the public repo to your recruiter or invite nick@spruce.eco to your private repo and let your recruiter know. 
+Ensure you have the following installed on your machine:
+
+- [Docker](https://docs.docker.com/engine/install/)
+- [Docker Buildx](https://github.com/docker/buildx)
+- [Node.js 24 LTS](https://nodejs.org/)
+
+## Quick Start (Docker)
+
+The easiest way to build and run the entire application (database, backend, and frontend) is using Docker.
+
+1.  **Start the Application**
+    Run the following command in the root directory. This will build the Docker images and start the services in detached mode.
+
+    ```bash
+    npm start
+    ```
+
+2.  **Play the Game**
+    Once the containers are running, open your browser and navigate to:
+    [http://localhost:8080](http://localhost:8080)
+
+## Management Commands
+
+The root `package.json` includes several helper scripts for managing the application:
+
+- **Stop the application:**
+
+  ```bash
+  npm run stop
+  ```
+
+  _(Stops the running containers)_
+
+- **Tear down (clean up):**
+
+  ```bash
+  npm run down
+  ```
+
+  _(Stops containers and removes volumes, wiping the database)_
+
+- **Start only the database:**
+  ```bash
+  npm run start:db
+  ```
+  _(Useful for local development if you want to run the app code outside of Docker)_
+
+## Local Development
+
+If you are developing, or if you prefer to run the client and server locally outside of Docker:
+
+1.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
+2.  **Start the Database**
+    ```bash
+    npm run start:db
+    ```
+3.  **Run the Server** (in a new terminal)
+    ```bash
+    cd server
+    npm start
+    ```
+4.  **Run the Client** (in a new terminal)
+    ```bash
+    cd client
+    npm start
+    ```
+    The client will be available at [http://localhost:3001](http://localhost:3001), and the server at [http://localhost:8080](http://localhost:8080).
